@@ -1,0 +1,13 @@
+{
+  "status": "HOLD",
+  "reason_code": "BASELINE_ONLY",
+  "reason": "Random baseline: never release on this",
+  "owner": "baseline",
+  "scope": "t13",
+  "evidence": [
+    "out\\baseline\\selected.csv"
+  ],
+  "metrics": {},
+  "ts": "2026-11-14T10:03:40+00:00",
+  "canonical": "HOLD"
+}
