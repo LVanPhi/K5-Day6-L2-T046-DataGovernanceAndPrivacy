@@ -1,0 +1,21 @@
+rank,item_id,score,reason,suggested_action,slice,evidence_path,reviewer,reviewer_decision,override_value,review_note,reviewed_at
+1,pool_001,0.342917,novelty_diversity_mmr,LABEL,,images/pool_001.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+2,pool_187,0.268251,novelty_diversity_mmr,LABEL,,images/pool_187.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+3,pool_051,0.237885,novelty_diversity_mmr,LABEL,,images/pool_051.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+4,pool_099,0.233291,novelty_diversity_mmr,LABEL,,images/pool_099.jpg,Nguyen Minh Hieu,escalate,,Person appears to overlap or stand on the green car; unclear from image.,2026-11-15T14:20:51.035Z
+5,pool_000,0.232678,novelty_diversity_mmr,LABEL,,images/pool_000.jpg,Nguyen Minh Hieu,escalate,,Person appears to overlap or stand on the green car; unclear from image.,2026-11-15T14:20:51.035Z
+6,pool_150,0.228066,novelty_diversity_mmr,LABEL,,images/pool_150.jpg,Nguyen Minh Hieu,approve,,People stand on the middle of the road,2026-11-15T14:20:51.035Z
+7,pool_137,0.223025,novelty_diversity_mmr,LABEL,,images/pool_137.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+8,pool_057,0.220171,novelty_diversity_mmr,LABEL,,images/pool_057.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+9,pool_006,0.213921,novelty_diversity_mmr,LABEL,,images/pool_006.jpg,Nguyen Minh Hieu,escalate,,Person appears to overlap or stand on the green car; unclear from image. And people stand on the middle of the road,2026-11-15T14:20:51.035Z
+10,pool_029,0.208177,novelty_diversity_mmr,LABEL,,images/pool_029.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+11,pool_036,0.206199,novelty_diversity_mmr,LABEL,,images/pool_036.jpg,Nguyen Minh Hieu,escalate,,Two cars appear to overlap; unclear from image.,2026-11-15T14:20:51.035Z
+12,pool_166,0.193961,novelty_diversity_mmr,LABEL,,images/pool_166.jpg,Nguyen Minh Hieu,reject,,Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+13,pool_114,0.193094,novelty_diversity_mmr,LABEL,,images/pool_114.jpg,Nguyen Minh Hieu,escalate,,Two cars appear to overlap; unclear from image.,2026-11-15T14:20:51.035Z
+14,pool_010,0.192206,novelty_diversity_mmr,LABEL,,images/pool_010.jpg,Nguyen Minh Hieu,escalate,,Person appears to overlap or stand on the green car; unclear from image.,2026-11-15T14:20:51.035Z
+15,pool_196,0.185872,novelty_diversity_mmr,LABEL,,images/pool_196.jpg,Nguyen Minh Hieu,reject,, Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+16,pool_107,0.180875,novelty_diversity_mmr,LABEL,,images/pool_107.jpg,Nguyen Minh Hieu,reject,, Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+17,pool_052,0.180233,novelty_diversity_mmr,LABEL,,images/pool_052.jpg,Nguyen Minh Hieu,approve,,People stand on middle of the road,2026-11-15T14:20:51.035Z
+18,pool_154,0.177666,novelty_diversity_mmr,LABEL,,images/pool_154.jpg,Nguyen Minh Hieu,approve,,Over lapping car,2026-11-15T14:20:51.035Z
+19,pool_081,0.173713,novelty_diversity_mmr,LABEL,,images/pool_081.jpg,Nguyen Minh Hieu,reject,, Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
+20,pool_188,0.169999,pool_unselected,SKIP,,images/pool_188.jpg,Nguyen Minh Hieu,reject,, Ordinary nighttime traffic; no clear rare case.,2026-11-15T14:20:51.035Z
