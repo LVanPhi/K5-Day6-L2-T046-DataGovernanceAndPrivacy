@@ -9,7 +9,7 @@
 |---|---|
 | Group ID | T046 |
 | Challenge | T13 · Active Learning & Rare Case Miner |
-| Thành viên (5–6) + vai trò | 1. Le Van Phi (Team Lead) · 2. Nguyen Hoang Dieu (Core Algorithm) · 3. (Team Lead bổ sung) · 4. (Team Lead bổ sung) · 5. (Team Lead bổ sung) |
+| Thành viên (5–6) + vai trò | 1. Le Van Phi (Team Lead) · 2. Nguyen Hoang Dieu (Core Algorithm) · 3. Le Duc Tuong (QA & Unit Tests) · 4. Nguyen Trong Binh (Data & Baseline) · 5. (Human Review & Report) |
 | Git URL | https://github.com/LVanPhi/K5-Day6-L2-T046-DataGovernanceAndPrivacy |
 | Tag `demo-180m` (commit) | `demo-180m` (b0ce8bf) |
 | Tag `final-24h` (commit) | `final-24h` |
