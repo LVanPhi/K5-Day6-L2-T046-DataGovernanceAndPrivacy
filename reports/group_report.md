@@ -1,6 +1,6 @@
 # Group Report — Day 06 Data Lab (Field-to-Release PoC)
 
-> Báo cáo chính thức nhóm G01 cho Challenge T13.
+> Báo cáo chính thức nhóm T046 cho Challenge T13.
 > Mọi con số và bằng chứng được trích xuất trực tiếp từ các file kết quả thực thi (`out/poc/run_info.json`, `out/poc/decision.json`, `tests/test_t13_pipeline.py`).
 
 ## 00 · Header
@@ -9,11 +9,11 @@
 |---|---|
 | Group ID | T046 |
 | Challenge | T13 · Active Learning & Rare Case Miner |
-| Thành viên (5–6) + vai trò | 1. Le Van Phi (Team Lead) · 2. Nguyen Hoang Dieu (Core Algorithm) · 3. Le Duc Tuong (QA & Unit Tests) · 4. Nguyen Trong Binh (Data & Baseline) · 5. (Human Review & Report) |
+| Thành viên (5–6) + vai trò | 1. Le Van Phi (Team Lead) · 2. Nguyen Hoang Dieu (Core Algorithm) · 3. Le Duc Tuong (QA & Unit Tests) · 4. Nguyen Trong Binh (Data & Baseline) · 5. Nguyen Minh Hieu (Human Review & Report) |
 | Git URL | https://github.com/LVanPhi/K5-Day6-L2-T046-DataGovernanceAndPrivacy |
 | Tag `demo-180m` (commit) | `demo-180m` (b0ce8bf) |
-| Tag `final-24h` (commit) | `final-24h` |
-| Deadline (giờ VN) | 2026-11-14 |
+| Tag `final-24h` (commit) | `final-24h` (e443216) |
+| Deadline (giờ VN) | 2026-11-15 |
 
 ## 01 · Problem statement
 
@@ -79,29 +79,36 @@
 ## 05 · Evaluation protocol
 
 - **Công thức primary metric:** `Rare-case Recall@K` = Số ca hiếm thật nằm trong tập K / Tổng số ca hiếm trong pool 200 ảnh.
-- **Threshold / budget K và lúc chốt:** $K = 20$, chốt trước tại phút 30 trong [reports/metric_contract.md](file:///mnt/d/VinAI/K5-Day6-L2-2A202603174-NguyenHoangDieu-DataGovernanceAndPrivacy/reports/metric_contract.md).
+- **Threshold / budget K và lúc chốt:** $K = 20$, chốt trước tại phút 30 trong [reports/metric_contract.md](metric_contract.md).
 - **Độ bất định:** Tính khoảng tin cậy Wilson score interval 95% cho tỷ lệ chọn trúng ca hiếm.
 - **Lệnh evaluate chính xác:** 
   `python -m src.evaluate --track t13 --pred out/poc/selected.csv --out reports/metrics_poc.json` (chạy khi giảng viên cài overlay `fixtures/t13_rare_mining/gt/rare_labels.csv`).
 
 ## 06 · Result slices
 
-- **Failure case 1 (ảnh/metadata + root cause):** 
-  *Hiện tượng:* Ảnh ban đêm bình thường có thể bị nhầm thành ca hiếm nếu chỉ nhìn vào độ sáng thấp.
-  *Root cause & Khắc phục:* Cụm đêm thông thường tập trung dày đặc trong không gian embedding; kNN distance loại bỏ chúng vì mật độ láng giềng cao, chỉ giữ lại ảnh đêm có mưa (`night_rain`) do có vệt phản quang dị biệt.
-- **Failure case 2:** 
-  *Hiện tượng:* Chùm ảnh chụp liên tiếp (burst frames) của cùng một hiện trường công trường (`construction`).
-  *Root cause & Khắc phục:* Ban đầu các ảnh này đều có điểm novelty cao; thuật toán Greedy MMR với hệ số phạt $\lambda=0.65$ chỉ chọn 1 ảnh tiêu biểu nhất và loại bỏ các ảnh trùng lặp kế tiếp.
-- **Latency / compute:** Máy CPU Intel x86_64, Windows 11, thời gian xử lý: 1.14 giây cho toàn bộ 200 ảnh (~5.7 ms/ảnh).
+- **Failure case 1 (Đêm thông thường vs Mưa đêm · ảnh/metadata + root cause):** 
+  *Ảnh thực tế:* `pool_001`, `pool_187`, `pool_051`, `pool_137` (điểm novelty ban đầu cao: 0.342, 0.268, 0.237).
+  *Hiện tượng:* Các ảnh ban đêm thông thường trên đường phố có độ sáng trung bình thấp (`brightness_mean` thấp) và mật độ cạnh thưa thớt, khiến các vector embedding thô dễ bị lệch về vùng ngoại biên (low-density region) trong không gian đặc trưng chưa phân tách sâu.
+  *Root cause & Khắc phục:* Reviewer Nguyễn Minh Hiếu đã phát hiện và phân loại chính xác các mẫu này là `"Ordinary nighttime traffic; no clear rare case."` và đánh dấu `reject` trong file review queue. Về giải thuật, cần bổ sung trọng số phạt theo tỷ lệ bão hòa màu và độ tương phản vệt sáng phản quang trên mặt đường để phân biệt rõ mưa đêm (`night_rain`) với đêm thông thường.
+- **Failure case 2 (Vật cản che khuất & Chùm ảnh chụp liên tiếp · ảnh/metadata + root cause):** 
+  *Ảnh thực tế:* `pool_099`, `pool_000`, `pool_006` (người đứng/chồng lấn lên xe xanh lá) và `pool_036`, `pool_114` (hai xe đè/che khuất lẫn nhau).
+  *Hiện tượng:* Các ca vật thể bị che khuất một phần (occluded objects) tạo ra vector embedding bất thường. Tuy nhiên, độ phân giải góc nhìn từ xa có thể gây khó khăn cho việc xác định đây là tình huống giao thông nguy hiểm thật hay chỉ là nhiễu góc chụp.
+  *Root cause & Khắc phục:* Reviewer đã chọn phương án `escalate` để yêu cầu kiểm định bởi chuyên gia (senior domain expert). Đồng thời, thuật toán Greedy MMR với hệ số phạt $\lambda = 0.65$ đã ngăn chặn thành công hiện tượng chọn lặp lại các khung hình burst shot liên tiếp của cùng một phân cảnh.
+- **Latency / compute:** Máy CPU Intel x86_64, Windows 11, thời gian xử lý: ~0.39 – 1.0 giây cho toàn bộ 200 ảnh (~2.0 – 5.0 ms/ảnh).
 
 ## 07 · Human & decision
 
 - **Review queue:** Sinh file `out/poc/review_queue.csv` gồm top 20 mẫu ưu tiên có cột `evidence_path` trỏ đến ảnh gốc.
-- **Contact sheet offline:** `out/poc/contact_sheet.html` nhúng thumbnail Base64 cho phép người duyệt mở offline trên trình duyệt, xem ảnh và chọn quyết định (`approve/reject/edit`).
-- **Cách override + audit log:** 
-  Khi reviewer bấm "Export decisions CSV", file `review_queue_reviewed.csv` được lưu vào `out/poc/`. Pipeline tự động nạp file này, loại bỏ các mẫu bị `reject`, đẩy mẫu kế tiếp lên thay thế và ghi nhận mọi hành động vào `out/poc/audit_log.jsonl` (append-only).
+- **Contact sheet offline:** `out/poc/contact_sheet.html` nhúng thumbnail Base64 cho phép người duyệt mở offline trên trình duyệt, xem ảnh và chọn quyết định (`approve/reject/escalate`).
+- **Thực thi Human-in-the-loop & Audit Log thực tế:** 
+  Thành viên Nguyễn Minh Hiếu đã thực hiện kiểm định toàn bộ 20 mẫu trong hàng đợi:
+  - **3 mẫu Approve:** `pool_150`, `pool_052` (người đi bộ đứng giữa lòng đường), `pool_154` (xe đè/va chạm nguy hiểm).
+  - **6 mẫu Escalate:** `pool_099`, `pool_000`, `pool_006`, `pool_010`, `pool_036`, `pool_114` (tình huống người/xe chồng lấn phức tạp cần hội chẩn).
+  - **11 mẫu Reject:** `pool_001`, `pool_187`, `pool_051`, `pool_137`, `pool_057`, `pool_029`, `pool_166`, `pool_196`, `pool_107`, `pool_081`, `pool_188` (giao thông ban đêm thông thường, không phải ca hiếm).
+  Kết quả được lưu tại `out/poc/review_queue_reviewed.csv` và nhật ký kiểm toán ghi nhận 20 hành vi tại `out/poc/audit_log.jsonl`.
 - **Decision policy + reason_code + owner:** 
-  Xuất file `out/poc/decision.json`: trạng thái `GO`, `reason_code: RARE_CASES_MINED`, người ký duyệt: `Nguyen Hoang Dieu (Lead / Algorithm)`.
+  Khi pipeline chạy lại với kết quả review, hệ thống nhận diện số mẫu hợp lệ còn lại sau khi trừ reject là $10 < K=20$. Do đó, hệ thống xuất file `out/poc/decision.json` với trạng thái an toàn:
+  `status: HOLD`, `reason_code: INSUFFICIENT_SAMPLES`, `reason: Selected only 10/20 samples`, người chịu trách nhiệm: `Nguyen Hoang Dieu (Mem)`. Đây là chốt chặn an toàn (safe governance gate) yêu cầu vòng khai phá kế tiếp bù đắp dữ liệu trước khi phát hành lô gán nhãn.
 
 ## 08 · Reproduce & tests
 
@@ -116,8 +123,8 @@ python -m src.main --track t13 --pipeline src.examples.random_baseline --output 
 python -m pytest -q
 ```
 
-- **Output của `pytest -q`:** `100% passed` (tất cả unit tests đều đạt, bao gồm 3 bài test do nhóm tự thiết kế trong `tests/test_t13_pipeline.py`).
-- **Môi trường:** Python 3.14 / 3.12, Windows 11 / WSL2, CPU Intel, seed 42 cố định.
+- **Output của `pytest -q`:** `100% passed` (5/5 unit tests đạt chuẩn, kiểm định tính toàn vẹn E2E, khả năng xử lý lỗi missing features, override review, tính tái lập seed 42 và runner status contract).
+- **Môi trường:** Python 3.12 (CPython), Windows 11, CPU Intel x86_64, seed 42 cố định.
 
 ## 09 · Limitations & ethics
 
@@ -131,11 +138,11 @@ python -m pytest -q
 
 | Học viên | Git author / email | Module / vai trò | Commit SHA / diff chứng minh | Trình bày? |
 |---|---|---|---|---|
-| Le Van Phi | LVanPhi | Team Lead / Management | `configs/lab.yaml`, `reports/` | Có |
-| Nguyen Hoang Dieu | dieu1301 / nguyenhoangdieu | Core Algorithm & QA Tests | `src/pipeline.py`, `tests/test_t13_pipeline.py` | |
-| Member 3 | | (Team Lead bổ sung) | | |
-| Member 4 | | (Team Lead bổ sung) | | |
-| Member 5 | | (Team Lead bổ sung) | | |
+| Le Van Phi | LVanPhi / phileevaan@gmail.com | Lead / Integrator | `bfa5973; 605de71; 35bedf6` |  |
+| Nguyen Trong Binh | NguyenTrongBinh2004 / binhx19123@gmail.com | Data & Baseline | `48cd68f` | |
+| Nguyen Hoang Dieu | Nguyen Hoang Dieu / nhdieu1301@gmail.com | Core Algorithm | `e85d937` | Có (Presenter) |
+| Le Duc Tuong | Le Duc Tuong / tuongit05@gmail.com | QA & Unit Tests | `159c696; 42ded14` | |
+| Nguyen Minh Hieu | FrostBite1707 / hieunguyenminh0412@gmail.com | Human Review & Report | `e443216` | |
 
 ---
 

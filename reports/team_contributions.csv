@@ -1,6 +1,6 @@
 member,git_author_name,git_email,role,modules_files,commit_shas,evidence_note,presenter
-Le Van Phi,,,Lead / Integrator,src/main.py; configs/,,,
-Nguyen Trong Binh,,,Data & fixtures,fixtures/; tools/,,,
-Nguyen Hoang Dieu,Nguyen Hoang Dieu,nhdieu1301@gmail.com,Core algorithm,src/pipeline.py,e85d937,kNN + Greedy MMR active learning pipeline,
-Le Duc Tuong,Le Duc Tuong,tuongit05@gmail.com,QA & Unit Tests,tests/test_t13_pipeline.py,159c696,Implemented 5 unit tests for T13 pipeline contract; edge cases; reproducibility; runner,
-Member 5,,,Human review + report,reports/group_report.md; demo/,,,
+Le Van Phi,LVanPhi,phileevaan@gmail.com,Lead / Integrator,src/main.py; configs/; reports/,bfa5973; 605de71; 35bedf6,Team lead; PR review and integration; orchestration,
+Nguyen Trong Binh,NguyenTrongBinh2004,binhx19123@gmail.com,Data & fixtures,fixtures/; out/baseline/,48cd68f,Run random baseline pipeline and generate baseline artifacts,
+Nguyen Hoang Dieu,Nguyen Hoang Dieu,nhdieu1301@gmail.com,Core algorithm,src/pipeline.py,e85d937,kNN + Greedy MMR active learning pipeline; junk filtering,yes
+Le Duc Tuong,Le Duc Tuong,tuongit05@gmail.com,QA & Unit Tests,tests/test_t13_pipeline.py,159c696; 42ded14,Implemented 5 unit tests for T13 contract; edge cases; reproducibility; runner,
+Nguyen Minh Hieu,FrostBite1707,hieunguyenminh0412@gmail.com,Human review + report,out/poc/review_queue_reviewed.csv; out/poc/audit_log.jsonl; reports/group_report.md,e443216,Conducted human-in-the-loop review on top candidates; audit logging; co-authored report,
